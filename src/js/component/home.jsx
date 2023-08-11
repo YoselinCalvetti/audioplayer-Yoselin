@@ -12,7 +12,8 @@ const Home = () => {
 
 const [sounds,setSounds]=useState([])
 const [url,setUrl]=useState("")
-
+const [selected, setSelected] = useState(0)
+const [statusSong, setStatusSong] = useState("Reproducir")
 
 	function obtenerInfo() {
 		fetch('https://playground.4geeks.com/apis/fake/sound/songs')
@@ -33,6 +34,30 @@ const [url,setUrl]=useState("")
 			obtenerInfo()
 		 },[])
 
+		 const Next = () => {
+			if (selected === 20) {
+				setSelected(1)
+				const valueId = 1
+				const urlUpdate = sounds.find((song) => {
+					return song.id === valueId
+				})
+				setUrl(urlUpdate.url)
+				setStatusSong("Pause")
+	
+			} else {
+				const valueId = selected + 1
+				setSelected(valueId)
+				const urlUpdate = sounds.find((song) => {
+					return song.id === valueId
+				})
+				setUrl(urlUpdate.url)
+				setStatusSong("Pause")
+	
+			}
+		}
+
+		
+
 	return (
 		<div className="container bg-secondary">
 			<div className="row">
@@ -52,7 +77,7 @@ const [url,setUrl]=useState("")
 	<i class="fa fa-backward p-3" style={{color: "#ffffff"}}></i>
 	<i onClick={()=>reproducir()} class="fa fa-play p-3" style={{color: "#ffffff"}}></i>
 	<i class="fa fa-pause p-3" style={{color: "#ffffff"}}></i>
-	<i class="fa fa-forward p-3" style={{color: "#ffffff"}}></i>
+	<i onClick={Next} class="fa fa-forward p-3" style={{color: "#ffffff"}}></i>
     </a>
   </div>
   <audio ref={audio} src={"https://assets.breatheco.de/apis/sound/" + url}>
